@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="subscriptions-container">
+
+    <!-- Affichage des messages d'erreur ou de succès -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <section>
+        <h2>Suivre d'autres utilisateurs</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username }}
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Abonnements</h2>
+        {% if following %}
+            <ul>
+                {% for follow in following %}
+                    <li>
+                        {{ follow.followed_user.username }}
+                        <form method="post" action="{% url 'unfollow' follow.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Désabonner</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Vous ne suivez aucun utilisateur pour le moment.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Abonnés</h2>
+        {% if followers %}
+            <ul>
+                {% for follow in followers %}
+                    <li>{{ follow.user.username }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun utilisateur ne vous suit pour le moment.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

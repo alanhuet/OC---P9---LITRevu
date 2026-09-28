@@ -1,13 +1,12 @@
 from django.db import models
 from django.conf import settings
-from authentication.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Ticket(models.Model):
     title = models.fields.CharField(max_length=128)
     description = models.fields.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(
-        User,
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
         )
@@ -16,13 +15,12 @@ class Ticket(models.Model):
 
 
 class Review(models.Model):
-    ticket = models.ForeignKey(Ticket, to=Ticket, on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField(max_length=1024, validators=[
+    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(validators=[
         MinValueValidator(0),
         MaxValueValidator(5)
     ])
     user = models.ForeignKey(
-        User,
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
         )
@@ -32,7 +30,7 @@ class Review(models.Model):
 
 
 class UserFollows(models.Model):
-    class Meta(models.Model.Meta):
+    class Meta:
         unique_together = ('user', 'followed_user', )
 
     user = models.ForeignKey(

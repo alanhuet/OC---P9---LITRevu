@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="reply-container">
+    <h2>Créer une critique</h2>
+
+    <!-- Rappel du ticket auquel on répond -->
+    <div class="ticket-preview" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <p>Vous répondez au billet de <strong>{{ ticket.user.username }}</strong></p>
+        <h3>{{ ticket.title }}</h3>
+        <p>{{ ticket.description }}</p>
+        {% if ticket.image %}
+            <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" style="max-width: 150px;">
+        {% endif %}
+    </div>
+
+    <!-- Formulaire de critique -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="text-align: right;">
+            <button type="submit">Envoyer</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
