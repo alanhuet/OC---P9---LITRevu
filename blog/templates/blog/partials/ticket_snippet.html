@@ -1,0 +1,25 @@
+<article class="post-card ticket-card" style="border: 1px solid #000; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+    <div class="post-header" style="display: flex; justify-content: space-between;">
+        {% if post.user == user %}
+            <p><strong>Vous</strong> avez demandé une critique</p>
+        {% else %}
+            <p><strong>{{ post.user.username }}</strong> a demandé une critique</p>
+        {% endif %}
+        <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
+    </div>
+
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.description }}</p>
+
+    {% if post.image %}
+        <div style="margin: 10px 0;">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 200px; height: auto;">
+        </div>
+    {% endif %}
+
+    {% if post.user != user and not post.review_set.exists %}
+        <div style="text-align: right; margin-top: 10px;">
+            <a href="{% url 'create-review-reply' post.id %}" class="btn">Créer une critique</a>
+        </div>
+    {% endif %}
+</article>

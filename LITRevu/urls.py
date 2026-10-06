@@ -15,42 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
-import authentication.views
-import blog.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', authentication.views.login_page, name='login'),
-    path('logout/', authentication.views.logout_user, name='logout'),
-    path('signup/', authentication.views.signup_page, name='signup'),
-    path('home/', blog.views.home, name='home'),
-    path('ticket/create/', blog.views.create_ticket, name='create-ticket'),
-    path(
-        'ticket/<int:ticket_id>/edit/',
-        blog.views.edit_ticket,
-        name='edit-ticket',
-        ),
-    path(
-        'ticket/<int:ticket_id>/delete/',
-        blog.views.delete_ticket,
-        name='delete-ticket',
-    ),
-    path('subscriptions/', blog.views.subscriptions, name='subscriptions'),
-    path(
-        'subsciptions/<int:follow_id>/unsubscribe/',
-        blog.views.unfollow_user,
-        name='unfollow',
-    ),
-    path(
-        'review/reate-combined/',
-        blog.views.create_ticket_and_review,
-        name='create-ticket-review',
-    ),
-    path(
-        'ticket/<int:ticket_id>/reply/',
-        blog.views.create_review_reply,
-        name='create-review-reply',
-    ),
+    path('', include('authentication.urls')),
+    path('', include('blog.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

@@ -1,10 +1,13 @@
+from itertools import chain
+
+from django.db.models import CharField, Value, Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import TicketForm, FollowUsersForm, ReviewForm
-from .models import Ticket, UserFollows
+from .models import Ticket, UserFollows, Review
 
 
 User = get_user_model()
@@ -156,6 +159,11 @@ def create_ticket_and_review(request):
 def create_review_reply(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
+    # Sécurité : bloquer si le billet a déjà une critique associée
+    if ticket.review_set.exists():
+        messages.error(request, 'Ce billet a déjà reçu une critique.')
+        return redirect('home')
+
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -172,3 +180,55 @@ def create_review_reply(request, ticket_id):
         'form': form,
     }
     return render(request, 'blog/create_review_reply.html', context)
+
+
+@login_required
+def user_posts(request):
+    # Récupération des tickets utilisateur
+    tickets = Ticket.objects.filter(user=request.user).annotate(
+        content_type=Value('TICKET', CharField())
+    )
+
+    # Récupération des critiques utilisateur
+    reviews = Review.objects.filter(user=request.user).annotate(
+        content_type=Value('REVIEW', CharField())
+    )
+
+    # Assemblage et tri par date décroissante
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created,
+        reverse=True,
+    )
+
+    return render(request, 'blog/posts.html', {'posts': posts})
+
+
+@login_required
+def feed(request):
+    # Récupération des ID utilisateurs suivis
+    followed_users = request.user.following.values_list(
+        'followed_user', flat=True
+    )
+
+    # Récupération des billets
+    tickets = Ticket.objects.filter(
+        Q(user=request.user) | Q(user__in=followed_users)
+    ).annotate(content_type=Value('TICKET', CharField()))
+
+    # Récupérer les critiques
+    reviews = Review.objects.filter(
+        Q(user=request.user)
+        | Q(user__in=followed_users)
+        | Q(ticket__user=request.user)
+    ).annotate(content_type=Value('REVIEW', CharField()))
+
+    # Combiner et trier
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created,
+        reverse=True
+    )
+
+    return render(request, 'blog/feed.html', {'posts': posts})
+

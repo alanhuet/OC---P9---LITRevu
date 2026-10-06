@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Vos posts</h2>
+
+<div class="posts-container">
+    {% for post in posts %}
+        {% if post.content_type == 'TICKET' %}
+            <article class="post-card ticket-card" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                <p>Vous avez demandé une critique</p>
+                <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.description }}</p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 150px;">
+                {% endif %}
+
+                <!-- Actions de modification/suppression -->
+                <div style="text-align: right; margin-top: 10px;">
+                    <a href="{% url 'edit-ticket' post.id %}">Modifier</a>
+                    <a href="{% url 'delete-ticket' post.id %}">Supprimer</a>
+                </div>
+            </article>
+
+        {% elif post.content_type == 'REVIEW' %}
+            <article class="post-card review-card" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                <p>Vous avez publié une critique</p>
+                <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
+                <h3>{{ post.headline }} - Note : {{ post.rating }}/5</h3>
+                <p>{{ post.body }}</p>
+
+                <!-- Ticket auquel la critique répond -->
+                <div class="nested-ticket" style="border: 1px solid #ddd; padding: 10px; margin-top: 10px; background-color: #f9f9f9;">
+                    <p><small>Ticket de {{ post.ticket.user.username }}</small></p>
+                    <h4>{{ post.ticket.title }}</h4>
+                </div>
+
+                <!-- Actions de modification/suppression -->
+                <div style="text-align: right; margin-top: 10px;">
+                    <a href="{% url 'edit-review' post.id %}">Modifier</a>
+                    <a href="{% url 'delete-review' post.id %}">Supprimer</a>
+                </div>
+            </article>
+        {% endif %}
+    {% empty %}
+        <p>Vous n'avez encore publié aucun billet ni critique.</p>
+    {% endfor %}
+</div>
+{% endblock %}

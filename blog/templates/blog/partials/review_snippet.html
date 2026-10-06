@@ -1,0 +1,32 @@
+<article class="post-card review-card" style="border: 1px solid #000; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+    <div class="post-header" style="display: flex; justify-content: space-between;">
+        {% if post.user == user %}
+            <p><strong>Vous</strong> avez publié une critique</p>
+        {% else %}
+            <p><strong>{{ post.user.username }}</strong> a publié une critique</p>
+        {% endif %}
+        <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
+    </div>
+
+    <h3>{{ post.headline }} - 
+        <span class="rating">
+            {% if post.rating == 0 %} - 0/5
+            {% elif post.rating == 1 %} ★☆☆☆☆
+            {% elif post.rating == 2 %} ★★☆☆☆
+            {% elif post.rating == 3 %} ★★★☆☆
+            {% elif post.rating == 4 %} ★★★★☆
+            {% elif post.rating == 5 %} ★★★★★
+            {% endif %}
+        </span>
+    </h3>
+    <p>{{ post.body }}</p>
+
+    <div class="nested-ticket" style="border: 1px solid #aaa; padding: 10px; margin-top: 15px; background-color: #f9f9f9; border-radius: 4px;">
+        <p><small>Ticket de <strong>{{ post.ticket.user.username }}</strong></small></p>
+        <h4>{{ post.ticket.title }}</h4>
+        <p>{{ post.ticket.description }}</p>
+        {% if post.ticket.image %}
+            <img src="{{ post.ticket.image.url }}" alt="{{ post.ticket.title }}" style="max-width: 120px; height: auto;">
+        {% endif %}
+    </div>
+</article>

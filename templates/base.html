@@ -1,12 +1,38 @@
-<html>
-    <head>
-        <title>LITRevu</title>
-    </head>
-    <body>
-        <h1>LITRevu</h1>
-        {% block content %}{% endblock content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LITReview{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Top bar / Navigation Bar -->
+    <header class="top-bar">
+        <div class="brand">
+            <h1>LITReview</h1>
+        </div>
+
         {% if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}">Flux</a>
+                <a href="{% url 'posts' %}">Posts</a>
+                <a href="{% url 'subscriptions' %}">Abonnements</a>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Se déconnecter</button>
+                </form>
+            </nav>
         {% endif %}
-    </body>
+    </header>
+
+    <!-- Contenu principal des pages -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
 </html>
