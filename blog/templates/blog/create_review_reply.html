@@ -1,25 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="reply-container">
+<div class="form-container double-form">
     <h2>Créer une critique</h2>
 
-    <!-- Rappel du ticket auquel on répond -->
-    <div class="ticket-preview" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
-        <p>Vous répondez au billet de <strong>{{ ticket.user.username }}</strong></p>
-        <h3>{{ ticket.title }}</h3>
-        <p>{{ ticket.description }}</p>
-        {% if ticket.image %}
-            <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" style="max-width: 150px;">
-        {% endif %}
-    </div>
+    <!-- Section 1 : Billet auquel on répond -->
+    <fieldset class="section-box">
+        <legend>Vous êtes en train de poster en réponse à</legend>
+        
+        <div class="ticket-preview-box">
+            <div class="ticket-preview-header">
+                <span><strong>{{ ticket.user.username }}</strong> a demandé une critique</span>
+                <span class="ticket-date">{{ ticket.time_created|date:"H:i, d F Y" }}</span>
+            </div>
+            <h3>{{ ticket.title }}</h3>
+            <p>{{ ticket.description }}</p>
+            {% if ticket.image %}
+                <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" class="ticket-img">
+            {% endif %}
+        </div>
+    </fieldset>
 
-    <!-- Formulaire de critique -->
+    <!-- Section 2 : Formulaire de Critique -->
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <div style="text-align: right;">
-            <button type="submit">Envoyer</button>
+        <fieldset class="section-box">
+            <legend>Critique</legend>
+
+            <div class="form-group">
+                <label for="{{ form.headline.id_for_label }}">Titre</label>
+                {{ form.headline }}
+            </div>
+
+            <div class="form-group">
+                <label>Note</label>
+                <div class="rating-options">
+                    {{ form.rating }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.body.id_for_label }}">Commentaire</label>
+                {{ form.body }}
+            </div>
+        </fieldset>
+
+        <div class="form-actions-review">
+            <button type="submit" class="btn">Envoyer</button>
         </div>
     </form>
 </div>

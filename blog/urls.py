@@ -33,4 +33,12 @@ urlpatterns = [
     ),
     path('posts/', views.user_posts, name='posts'),
     path('feed/', views.feed, name='home'),
+    path(
+        'review/<int:review_id>/edit/', views.edit_review, name='edit-review'
+    ),
+    path(
+        'review/<int:review_id>/delete/',
+        views.delete_review,
+        name='delete-review',
+    ),
 ]

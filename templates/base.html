@@ -8,31 +8,32 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <div class="page-frame">
 
-    <!-- Top bar / Navigation Bar -->
-    <header class="top-bar">
-        <div class="brand">
-            <h1>LITReview</h1>
-        </div>
+        <!-- Top bar / Navigation Bar -->
+        <header class="top-bar">
+            <div class="brand">
+                <h1>LITReview</h1>
+            </div>
 
-        {% if user.is_authenticated %}
-            <nav class="nav-menu">
-                <a href="{% url 'home' %}">Flux</a>
-                <a href="{% url 'posts' %}">Posts</a>
-                <a href="{% url 'subscriptions' %}">Abonnements</a>
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="link-button">Se déconnecter</button>
-                </form>
-            </nav>
-        {% endif %}
-    </header>
+            {% if user.is_authenticated %}
+                <nav class="nav-menu">
+                    <a href="{% url 'home' %}">Flux</a>
+                    <a href="{% url 'posts' %}">Posts</a>
+                    <a href="{% url 'subscriptions' %}">Abonnements</a>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="link-button">Se déconnecter</button>
+                    </form>
+                </nav>
+            {% endif %}
+        </header>
 
-    <!-- Contenu principal des pages -->
-    <main class="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
-
+        <!-- Contenu principal des pages -->
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
 </body>
 </html>

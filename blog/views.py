@@ -207,8 +207,8 @@ def user_posts(request):
 @login_required
 def feed(request):
     # Récupération des ID utilisateurs suivis
-    followed_users = request.user.following.values_list(
-        'followed_user', flat=True
+    followed_users = UserFollows.objects.filter(user=request.user).values_list(
+    'followed_user', flat=True
     )
 
     # Récupération des billets
@@ -232,3 +232,38 @@ def feed(request):
 
     return render(request, 'blog/feed.html', {'posts': posts})
 
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+
+    # Sécurité : seul l'auteur peut modifier sa critique
+    if review.user != request.user:
+        return redirect('posts')
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('posts')
+    else:
+        form = ReviewForm(instance=review)
+
+    return render(
+        request, 'blog/edit_review.html', {'form': form, 'review': review}
+    )
+
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+
+    # Sécurité : seul l'auteur peut supprimer sa critique
+    if review.user != request.user:
+        return redirect('posts')
+
+    if request.method == 'POST':
+        review.delete()
+        return redirect('posts')
+
+    return render(request, 'blog/delete_review.html', {'review': review})

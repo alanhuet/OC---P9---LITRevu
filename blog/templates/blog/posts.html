@@ -1,49 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Vos posts</h2>
-
 <div class="posts-container">
+    <h2>Vos posts</h2>
+
     {% for post in posts %}
         {% if post.content_type == 'TICKET' %}
-            <article class="post-card ticket-card" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-                <p>Vous avez demandé une critique</p>
-                <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
+            <!-- Carte Ticket -->
+            <article class="post-card">
+                <div class="post-header">
+                    <span>Vous avez demandé une critique</span>
+                    <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
+                </div>
                 <h3>{{ post.title }}</h3>
                 <p>{{ post.description }}</p>
                 {% if post.image %}
-                    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 150px;">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-img">
                 {% endif %}
 
                 <!-- Actions de modification/suppression -->
-                <div style="text-align: right; margin-top: 10px;">
-                    <a href="{% url 'edit-ticket' post.id %}">Modifier</a>
-                    <a href="{% url 'delete-ticket' post.id %}">Supprimer</a>
+                <div class="card-actions">
+                    <a href="{% url 'edit-ticket' post.id %}" class="btn">Modifier</a>
+                    <a href="{% url 'delete-ticket' post.id %}" class="btn">Supprimer</a>
                 </div>
             </article>
 
         {% elif post.content_type == 'REVIEW' %}
-            <article class="post-card review-card" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-                <p>Vous avez publié une critique</p>
-                <p><small>{{ post.time_created|date:"H:i, d F Y" }}</small></p>
-                <h3>{{ post.headline }} - Note : {{ post.rating }}/5</h3>
+            <!-- Carte Critique -->
+            <article class="post-card">
+                <div class="post-header">
+                    <span>Vous avez publié une critique</span>
+                    <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
+                </div>
+                <h3>
+                    {{ post.headline }} - 
+                    <span class="stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= post.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </span>
+                </h3>
                 <p>{{ post.body }}</p>
 
                 <!-- Ticket auquel la critique répond -->
-                <div class="nested-ticket" style="border: 1px solid #ddd; padding: 10px; margin-top: 10px; background-color: #f9f9f9;">
+                <div class="nested-ticket">
                     <p><small>Ticket de {{ post.ticket.user.username }}</small></p>
                     <h4>{{ post.ticket.title }}</h4>
+                    {% if post.ticket.image %}
+                        <img src="{{ post.ticket.image.url }}" alt="{{ post.ticket.title }}" class="post-img">
+                    {% endif %}
                 </div>
 
                 <!-- Actions de modification/suppression -->
-                <div style="text-align: right; margin-top: 10px;">
-                    <a href="{% url 'edit-review' post.id %}">Modifier</a>
-                    <a href="{% url 'delete-review' post.id %}">Supprimer</a>
+                <div class="card-actions">
+                    <a href="{% url 'edit-review' post.id %}" class="btn">Modifier</a>
+                    <a href="{% url 'delete-review' post.id %}" class="btn">Supprimer</a>
                 </div>
             </article>
         {% endif %}
     {% empty %}
-        <p>Vous n'avez encore publié aucun billet ni critique.</p>
+        <p class="empty-msg">Vous n'avez encore publié aucun billet ni critique.</p>
     {% endfor %}
 </div>
 {% endblock %}

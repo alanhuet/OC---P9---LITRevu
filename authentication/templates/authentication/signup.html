@@ -1,12 +1,42 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <h2>Inscription</h2>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
+<div class="signup-container">
+    <h2>Inscrivez-vous</h2>
+
     <form method="post">
-        {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >S’inscrire</button>
+
+        <!-- Affichage des erreurs si le formulaire est invalide -->
+        {% if form.errors %}
+            <div class="error-messages">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Nom d'utilisateur" value="{{ form.username.value|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" name="password1" placeholder="Mot de passe" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" name="password2" placeholder="Confirmer mot de passe" required>
+        </div>
+
+        <div class="form-actions-signup">
+            <a href="{% url 'login' %}" class="btn">Retourner</a>
+            <button type="submit" class="btn">S'inscrire</button>
+        </div>
     </form>
-{% endblock content %}
+</div>
+{% endblock %}

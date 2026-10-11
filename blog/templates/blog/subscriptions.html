@@ -3,53 +3,60 @@
 {% block content %}
 <div class="subscriptions-container">
 
-    <!-- Affichage des messages d'erreur ou de succès -->
+    <!-- Messages d'erreur ou de succès -->
     {% if messages %}
-        <ul class="messages">
+        <div class="messages">
             {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
+                <p class="{{ message.tags }}">{{ message }}</p>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 
-    <section>
+    <!-- 1. Formulaire pour suivre un utilisateur -->
+    <section class="subs-section">
         <h2>Suivre d'autres utilisateurs</h2>
-        <form method="post">
+        <form method="post" class="follow-form">
             {% csrf_token %}
-            {{ form.username }}
-            <button type="submit">Envoyer</button>
+            <div class="follow-input-box">
+                {{ form.username }}
+            </div>
+            <button type="submit" class="btn">Envoyer</button>
         </form>
     </section>
 
-    <section>
+    <!-- 2. Liste des abonnements -->
+    <section class="subs-section">
         <h2>Abonnements</h2>
         {% if following %}
-            <ul>
+            <div class="subs-table">
                 {% for follow in following %}
-                    <li>
-                        {{ follow.followed_user.username }}
-                        <form method="post" action="{% url 'unfollow' follow.id %}" style="display:inline;">
+                    <div class="subs-row">
+                        <span class="username">{{ follow.followed_user.username }}</span>
+                        <form method="post" action="{% url 'unfollow' follow.id %}" class="unfollow-form">
                             {% csrf_token %}
-                            <button type="submit">Désabonner</button>
+                            <button type="submit" class="btn-unfollow">Désabonner</button>
                         </form>
-                    </li>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% else %}
-            <p>Vous ne suivez aucun utilisateur pour le moment.</p>
+            <p class="empty-msg">Vous ne suivez aucun utilisateur pour le moment.</p>
         {% endif %}
     </section>
 
-    <section>
+    <!-- 3. Liste des abonnés -->
+    <section class="subs-section">
         <h2>Abonnés</h2>
         {% if followers %}
-            <ul>
+            <div class="subs-table">
                 {% for follow in followers %}
-                    <li>{{ follow.user.username }}</li>
+                    <div class="subs-row single-col">
+                        <span class="username">{{ follow.user.username }}</span>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% else %}
-            <p>Aucun utilisateur ne vous suit pour le moment.</p>
+            <p class="empty-msg">Aucun utilisateur ne vous suit pour le moment.</p>
         {% endif %}
     </section>
 

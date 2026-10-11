@@ -1,24 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="combined-container">
+<div class="form-container double-form">
     <h2>Créer une critique</h2>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <fieldset>
+        <!-- Section 1 : Billet / Livre -->
+        <fieldset class="section-box">
             <legend>Livre / Article</legend>
-            {{ ticket_form.as_p }}
+
+            <div class="form-group">
+                <label for="{{ ticket_form.title.id_for_label }}">Titre</label>
+                {{ ticket_form.title }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ ticket_form.description.id_for_label }}">Description</label>
+                {{ ticket_form.description }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ ticket_form.image.id_for_label }}">Image</label>
+                {{ ticket_form.image }}
+            </div>
         </fieldset>
 
-        <fieldset>
+        <!-- Section 2 : Critique -->
+        <fieldset class="section-box">
             <legend>Critique</legend>
-            {{ review_form.as_p }}
+
+            <div class="form-group">
+                <label for="{{ review_form.headline.id_for_label }}">Titre</label>
+                {{ review_form.headline }}
+            </div>
+
+            <div class="form-group">
+                <label>Note</label>
+                <div class="rating-options">
+                    {{ review_form.rating }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ review_form.body.id_for_label }}">Commentaire</label>
+                {{ review_form.body }}
+            </div>
         </fieldset>
 
-        <div style="text-align: right; margin-top: 15px;">
-            <button type="submit">Envoyer</button>
+        <!-- Bouton d'envoi -->
+        <div class="form-actions-review">
+            <button type="submit" class="btn">Envoyer</button>
         </div>
     </form>
 </div>

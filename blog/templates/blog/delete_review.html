@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="delete-container">
+    <h2>Supprimer la critique</h2>
+
+    <div class="confirm-box">
+        <p class="confirm-text">
+            Êtes-vous sûr de vouloir supprimer la critique « <strong>{{ review.headline }}</strong> » ?
+        </p>
+
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+            <div class="form-actions-confirm">
+                <a href="{% url 'posts' %}" class="btn">Annuler</a>
+                <button type="submit" class="btn">Confirmer la suppression</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

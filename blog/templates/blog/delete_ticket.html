@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Créer un ticket</h2>
+<div class="delete-container">
+    <h2>Supprimer le ticket</h2>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Envoyer</button>
-</form>
+    <div class="confirm-box">
+        <p class="confirm-text">
+            Êtes-vous sûr de vouloir supprimer le ticket « <strong>{{ ticket.title }}</strong> » ?
+        </p>
 
-<a href="{% url 'home' %}">Annuler</a>
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+            <div class="form-actions-confirm">
+                <a href="{% url 'posts' %}" class="btn">Annuler</a>
+                <button type="submit" class="btn">Confirmer la suppression</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

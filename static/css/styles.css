@@ -1,0 +1,573 @@
+/* --- Réinitialisation de base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background-color: #ffffff;
+}
+
+/* --- Grand cadre englobant toute la page --- */
+.page-frame {
+    border: 2px solid #000000;
+    max-width: 1000px;
+    min-height: 650px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+/* --- Cadre supérieur (En-tête / Top Bar) --- */
+.top-bar {
+    border-bottom: 2px solid #000000;
+    padding: 18px 20px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-bar .brand h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
+    margin: 0;
+}
+
+/* Menu de navigation (quand l'utilisateur est connecté) */
+.nav-menu {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 0.95rem;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+}
+
+/* Style du bouton de déconnexion dans le menu */
+.link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #000000;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.link-button:hover {
+    text-decoration: underline;
+}
+
+/* --- Zone de contenu principal --- */
+.main-content {
+    padding: 40px 20px;
+    flex: 1;
+}
+
+/* --- Disposition 2 colonnes pour la connexion --- */
+.login-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 40px;
+}
+
+.login-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.login-col h2 {
+    font-size: 1.4rem;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+
+/* --- Formulaire et champs de saisie --- */
+.login-section form {
+    width: 100%;
+    max-width: 300px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+/* --- Boutons encadrés avec coins arrondis --- */
+.btn, button:not(.link-button) {
+    display: inline-block;
+    padding: 8px 25px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover, button:not(.link-button):hover {
+    background-color: #f0f0f0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+/* --- Page d'inscription (Signup) --- */
+.signup-container {
+    max-width: 450px;
+    margin: 40px auto 0 auto;
+    text-align: center;
+}
+
+.signup-container h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+.signup-container .form-group {
+    margin-bottom: 15px;
+}
+
+.signup-container .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.form-actions-signup {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.error-messages {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+/* --- Page Abonnements --- */
+.subscriptions-container {
+    max-width: 750px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.subs-section {
+    margin-bottom: 45px;
+}
+
+.subs-section h2 {
+    font-size: 1.4rem;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+/* Formulaire de recherche aligné sur la largeur des tableaux (650px) */
+.follow-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 650px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.follow-input-box {
+    flex: 1; /* S'étire pour occuper tout l'espace à gauche */
+}
+
+.follow-input-box input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Encadrés pour les abonnements et abonnés */
+.subs-table {
+    border: 1px solid #000000;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.subs-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    border-bottom: 1px solid #000000;
+}
+
+.subs-table .subs-row:last-child {
+    border-bottom: none;
+}
+
+.subs-row .username {
+    padding: 12px 20px;
+    text-align: left;
+    flex: 1;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.subs-row .unfollow-form {
+    margin: 0;
+    display: flex;
+}
+
+/* Bouton Désabonner sans arrondis */
+.btn-unfollow {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-left: 1px solid #000000;
+    border-radius: 0 !important;
+    padding: 0 25px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-unfollow:hover {
+    background-color: #f0f0f0;
+}
+
+.subs-row.single-col .username {
+    width: 100%;
+}
+
+.empty-msg {
+    color: #666;
+    font-style: italic;
+}
+
+.messages {
+    margin-bottom: 20px;
+    color: #d9534f;
+}
+
+/* --- Formulaire Créer un Ticket --- */
+.form-container {
+    max-width: 700px;
+    margin: 20px auto 0 auto;
+}
+
+.form-container h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 35px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #000000;
+}
+
+/* Champs Titre et Description */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+/* Supprime le cadre parasite du champ fichier */
+.form-group input[type="file"] {
+    border: none;
+    padding: 0;
+    background: transparent;
+}
+
+/* Bouton Envoyer aligné à droite */
+.form-actions-ticket {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.form-actions-ticket .btn {
+    padding: 10px 35px;
+}
+
+/* --- Page Créer une critique --- */
+.double-form {
+    max-width: 800px;
+    margin: 20px auto 0 auto;
+}
+
+.double-form h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+
+/* Encadrés fieldset pour Livre/Article et Critique */
+.section-box {
+    border: 1px solid #000000;
+    border-radius: 2px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.section-box legend {
+    font-size: 1.1rem;
+    font-weight: normal;
+    padding: 0 10px;
+    color: #000000;
+}
+
+/* --- Alignement horizontal des boutons radio de la Note --- */
+.rating-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+    margin: 10px 0;
+}
+
+/* Annule le comportement en bloc des balises générées par Django (ul, li, div, fieldset) */
+.rating-options ul,
+.rating-options fieldset,
+.rating-options > div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 50px !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.rating-options li,
+.rating-options label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+/* Bouton Envoyer en bas à droite */
+.form-actions-review {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.form-actions-review .btn {
+    padding: 10px 35px;
+}
+
+/* --- Carte d'aperçu du ticket dans la réponse --- */
+.ticket-preview-box {
+    border: 1px solid #000000;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+.ticket-preview-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.ticket-preview-box h3 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.ticket-preview-box p {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.ticket-img {
+    max-width: 140px;
+    height: auto;
+    display: block;
+}
+
+/* --- Page Vos Posts --- */
+.posts-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.posts-container h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+/* Structure des cartes */
+.post-card {
+    border: 1px solid #000000;
+    border-radius: 2px;
+    padding: 20px;
+    margin-bottom: 25px;
+    background-color: #ffffff;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #333333;
+    margin-bottom: 12px;
+}
+
+.post-card h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.post-img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Ticket imbriqué dans une critique */
+.nested-ticket {
+    border: 1px solid #000000;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #ffffff;
+}
+
+.nested-ticket h4 {
+    margin-bottom: 5px;
+}
+
+/* Alignement des boutons Modifier / Supprimer en bas à droite */
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* --- Aperçu de l'image lors de la modification d'un ticket --- */
+.current-image-box {
+    margin-bottom: 15px;
+}
+
+.edit-ticket-img {
+    max-width: 220px;
+    height: auto;
+    display: block;
+    border: 1px solid #000000;
+}
+
+/* --- Pages secondaires / Confirmation de suppression --- */
+.delete-container {
+    max-width: 600px;
+    margin: 40px auto 0 auto;
+    text-align: center;
+}
+
+.delete-container h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+.confirm-box {
+    border: 1px solid #000000;
+    border-radius: 2px;
+    padding: 35px 25px;
+    background-color: #ffffff;
+}
+
+.confirm-text {
+    font-size: 1.05rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    color: #000000;
+}
+
+.form-actions-confirm {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.form-actions-confirm .btn {
+    padding: 10px 25px;
+}

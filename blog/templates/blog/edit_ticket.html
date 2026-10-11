@@ -1,13 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>modifier votre ticket</h2>
+<div class="form-container">
+    <h2>Modifier votre ticket</h2>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Envoyer</button>
-</form>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-<a href="{% url 'home' %}">Annuler</a>
+        <!-- Champ Titre -->
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Titre</label>
+            {{ form.title }}
+        </div>
+
+        <!-- Champ Description -->
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            {{ form.description }}
+        </div>
+
+        <!-- Champ Image -->
+        <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">Image</label>
+            {% if ticket.image %}
+                <div class="current-image-box">
+                    <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" class="edit-ticket-img">
+                </div>
+            {% endif %}
+            {{ form.image }}
+        </div>
+
+        <!-- Action : Bouton Envoyer à droite -->
+        <div class="form-actions-ticket">
+            <button type="submit" class="btn">Envoyer</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container double-form">
+    <h2>Modifier votre critique</h2>
+
+    <!-- Section 1 : Rappel du ticket d'origine -->
+    <fieldset class="section-box">
+        <legend>Vous êtes en train de poster en réponse à</legend>
+
+        <div class="ticket-preview-box">
+            <div class="ticket-preview-header">
+                <span><strong>{{ review.ticket.user.username }}</strong> a demandé une critique</span>
+                {% if review.ticket.time_created %}
+                    <span class="ticket-date">{{ review.ticket.time_created|date:"H:i, d F Y" }}</span>
+                {% endif %}
+            </div>
+            <h3>{{ review.ticket.title }}</h3>
+            <p>{{ review.ticket.description }}</p>
+            {% if review.ticket.image %}
+                <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}" class="ticket-img">
+            {% endif %}
+        </div>
+    </fieldset>
+
+    <!-- Section 2 : Formulaire de modification de la critique -->
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="section-box">
+            <legend>Critique</legend>
+
+            <div class="form-group">
+                <label for="{{ form.headline.id_for_label }}">Titre</label>
+                {{ form.headline }}
+            </div>
+
+            <div class="form-group">
+                <label>Note</label>
+                <div class="rating-options">
+                    {{ form.rating }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.body.id_for_label }}">Commentaire</label>
+                {{ form.body }}
+            </div>
+        </fieldset>
+
+        <div class="form-actions-review">
+            <button type="submit" class="btn">Envoyer</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
