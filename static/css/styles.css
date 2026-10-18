@@ -289,8 +289,24 @@ body {
     font-style: italic;
 }
 
-.messages {
+/* --- Messages (Erreurs et Succès) --- */
+.messages-container {
     margin-bottom: 20px;
+    text-align: center;
+}
+
+.message-item {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+/* Vert pour les confirmations (abonnements, créations) */
+.message-item.success {
+    color: #28a745;
+}
+
+/* Rouge pour les erreurs */
+.message-item.error {
     color: #d9534f;
 }
 
@@ -535,39 +551,3 @@ body {
     border: 1px solid #000000;
 }
 
-/* --- Pages secondaires / Confirmation de suppression --- */
-.delete-container {
-    max-width: 600px;
-    margin: 40px auto 0 auto;
-    text-align: center;
-}
-
-.delete-container h2 {
-    font-size: 1.5rem;
-    font-weight: normal;
-    margin-bottom: 30px;
-}
-
-.confirm-box {
-    border: 1px solid #000000;
-    border-radius: 2px;
-    padding: 35px 25px;
-    background-color: #ffffff;
-}
-
-.confirm-text {
-    font-size: 1.05rem;
-    margin-bottom: 30px;
-    line-height: 1.5;
-    color: #000000;
-}
-
-.form-actions-confirm {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.form-actions-confirm .btn {
-    padding: 10px 25px;
-}

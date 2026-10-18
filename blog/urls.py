@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 
@@ -17,7 +18,7 @@ urlpatterns = [
     ),
     path('subscriptions/', views.subscriptions, name='subscriptions'),
     path(
-        'subsciptions/<int:follow_id>/unsubscribe/',
+        'subscriptions/<int:follow_id>/unsubscribe/',
         views.unfollow_user,
         name='unfollow',
     ),

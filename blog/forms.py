@@ -1,12 +1,14 @@
 from django import forms
+
 from .models import Ticket, Review
 
 
 class TicketForm(forms.ModelForm):
+    # Formulaire de création et d'édition pour les tickets.
     class Meta:
         model = Ticket
         fields = ['title', 'description', 'image']
-        lables = {
+        labels = {
             'title': 'Titre',
             'description': 'Description',
             'image': 'Image',
@@ -14,6 +16,7 @@ class TicketForm(forms.ModelForm):
 
 
 class FollowUsersForm(forms.Form):
+    # Formulaire permettant de s'abonner à un autre utilisateur via son pseudo.
     username = forms.CharField(
         max_length=150,
         label="Nom d'utilisateur",
@@ -24,6 +27,7 @@ class FollowUsersForm(forms.Form):
 
 
 class ReviewForm(forms.ModelForm):
+    # Formulaire de création et d'édition pour les critiques.
     class Meta:
         model = Review
         fields = ['headline', 'rating', 'body']
@@ -34,6 +38,6 @@ class ReviewForm(forms.ModelForm):
         }
         widgets = {
             'rating': forms.RadioSelect(
-                choices=[(i, f'- {i}') for i in range(6)]
+                choices=[(i, f'{i}') for i in range(6)]
             ),
         }

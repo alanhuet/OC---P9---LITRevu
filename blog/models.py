@@ -1,10 +1,11 @@
-from django.db import models
 from django.conf import settings
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 from PIL import Image
 
 
 class Ticket(models.Model):
+    # Modèle représentant une demande de critique (Ticket).
     title = models.fields.CharField(max_length=128)
     description = models.fields.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(
@@ -31,6 +32,7 @@ class Ticket(models.Model):
 
 
 class Review(models.Model):
+    # Modèle représentant une critique associée à un Ticket.
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(validators=[
         MinValueValidator(0),
@@ -46,6 +48,7 @@ class Review(models.Model):
 
 
 class UserFollows(models.Model):
+    # Gère le système d'abonnement entre utilisateurs.
     class Meta:
         unique_together = ('user', 'followed_user', )
 

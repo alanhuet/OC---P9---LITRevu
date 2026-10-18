@@ -3,11 +3,11 @@
 {% block content %}
 <div class="subscriptions-container">
 
-    <!-- Messages d'erreur ou de succès -->
+    <!-- Messages d'information, d'erreur ou de succès -->
     {% if messages %}
-        <div class="messages">
+        <div class="messages-container">
             {% for message in messages %}
-                <p class="{{ message.tags }}">{{ message }}</p>
+                <p class="message-item {{ message.tags }}">{{ message }}</p>
             {% endfor %}
         </div>
     {% endif %}

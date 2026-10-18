@@ -1,9 +1,9 @@
 from itertools import chain
 
-from django.db.models import CharField, Value, Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.db.models import CharField, Value, Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import TicketForm, FollowUsersForm, ReviewForm
@@ -15,11 +15,15 @@ User = get_user_model()
 
 @login_required
 def home(request):
+    # Point d'entrée principal redirigeant vers la page d'accueil.
+
     return render(request, 'blog/home.html')
 
 
 @login_required
 def create_ticket(request):
+    # Gère la création d'un nouveau ticket (livre/oeuvre à critiquer).
+
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -35,6 +39,8 @@ def create_ticket(request):
 
 @login_required
 def edit_ticket(request, ticket_id):
+    # Permet à l'auteur de modifier son propre ticket.
+
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     if ticket.user != request.user:
@@ -55,6 +61,8 @@ def edit_ticket(request, ticket_id):
 
 @login_required
 def delete_ticket(request, ticket_id):
+    # Permet à l'auteur de supprimer son propre ticket.
+
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     if ticket.user != request.user:
@@ -69,6 +77,8 @@ def delete_ticket(request, ticket_id):
 
 @login_required
 def subscriptions(request):
+    # Gère l'affichage et l'ajout de nouveaux abonnements.
+
     form = FollowUsersForm()
 
     if request.method == 'POST':
@@ -117,6 +127,8 @@ def subscriptions(request):
 
 @login_required
 def unfollow_user(request, follow_id):
+    # Supprime un abonnement existant.
+
     follow = get_object_or_404(UserFollows, id=follow_id, user=request.user)
     if request.method == 'POST':
         follow.delete()
@@ -129,6 +141,8 @@ def unfollow_user(request, follow_id):
 
 @login_required
 def create_ticket_and_review(request):
+    # Crée simultanément un ticket et sa critique associée.
+
     ticket_form = TicketForm()
     review_form = ReviewForm()
 
@@ -157,6 +171,8 @@ def create_ticket_and_review(request):
 
 @login_required
 def create_review_reply(request, ticket_id):
+    # Permet de répondre à un ticket existant avec une critique.
+    
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     # Sécurité : bloquer si le billet a déjà une critique associée
@@ -184,6 +200,9 @@ def create_review_reply(request, ticket_id):
 
 @login_required
 def user_posts(request):
+    """Affiche uniquement les tickets et critiques créés par
+    l'utilisateur connecté."""
+
     # Récupération des tickets utilisateur
     tickets = Ticket.objects.filter(user=request.user).annotate(
         content_type=Value('TICKET', CharField())
@@ -206,14 +225,22 @@ def user_posts(request):
 
 @login_required
 def feed(request):
+    """Génère le flux d'actualités (tickets et critiques) de
+    l'utilisateur et de ses abonnements."""
+
     # Récupération des ID utilisateurs suivis
     followed_users = UserFollows.objects.filter(user=request.user).values_list(
-    'followed_user', flat=True
+        'followed_user', flat=True
     )
+
+    # Récupération des ID des tickets qui ont déjà reçu une critique
+    answered_tickets_ids = Review.objects.values_list('ticket_id', flat=True)
 
     # Récupération des billets
     tickets = Ticket.objects.filter(
         Q(user=request.user) | Q(user__in=followed_users)
+    ).exclude(
+        id__in=answered_tickets_ids
     ).annotate(content_type=Value('TICKET', CharField()))
 
     # Récupérer les critiques
@@ -235,6 +262,8 @@ def feed(request):
 
 @login_required
 def edit_review(request, review_id):
+    # Permet à l'auteur de modifier sa propre critique.
+
     review = get_object_or_404(Review, id=review_id)
 
     # Sécurité : seul l'auteur peut modifier sa critique
@@ -256,6 +285,8 @@ def edit_review(request, review_id):
 
 @login_required
 def delete_review(request, review_id):
+    # Permet à l'auteur de supprimer sa propre critique.
+
     review = get_object_or_404(Review, id=review_id)
 
     # Sécurité : seul l'auteur peut supprimer sa critique
