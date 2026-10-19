@@ -23,7 +23,7 @@
                     <a href="{% url 'subscriptions' %}">Abonnements</a>
                     <form action="{% url 'logout' %}" method="post" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="link-button">Se déconnecter</button>
+                        <button type="submit" class="link-button">Se déconnecter ({{ user.username }})</button>
                     </form>
                 </nav>
             {% endif %}

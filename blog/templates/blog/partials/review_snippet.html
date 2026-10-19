@@ -1,5 +1,5 @@
-<article class="post-card review-card" style="border: 1px solid #000; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
-    <div class="post-header" style="display: flex; justify-content: space-between;">
+<article class="post-card">
+    <div class="post-header">
         {% if post.user == user %}
             <p><strong>Vous</strong> avez publié une critique</p>
         {% else %}
@@ -21,8 +21,13 @@
     </h3>
     <p>{{ post.body }}</p>
 
-    <div class="nested-ticket" style="border: 1px solid #aaa; padding: 10px; margin-top: 15px; background-color: #f9f9f9; border-radius: 4px;">
-        <p><small>Ticket de <strong>{{ post.ticket.user.username }}</strong></small></p>
+    <div class="nested-ticket">
+        {% if post.ticket.user == user %}
+            <p><strong>Votre</strong> ticket</p>
+        {% else %}
+            <p><small>Ticket de <strong>{{ post.ticket.user.username }}</strong></small></p>
+        {% endif %}
+        
         <h4>{{ post.ticket.title }}</h4>
         <p>{{ post.ticket.description }}</p>
         {% if post.ticket.image %}
