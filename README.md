@@ -21,6 +21,8 @@ LITRevu est une application web Django permettant à une communauté d'utilisate
 
 Suivez ces étapes pour lancer le projet sur votre machine locale.
 
+> **Note :** Selon votre système d'exploitation et votre configuration, remplacez `python` par `python3` dans les commandes ci-dessous si nécessaire (notamment sur macOS / Linux).
+
 ### 1. Cloner le dépôt
 
 ```bash
@@ -52,11 +54,17 @@ pip install -r requirements.txt
 ### 4. Initialiser la base de données (SQLite)
 
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Lancer le serveur de développement
+### 5. (Optionnel) Créer un compte administrateur / superutilisateur
+Pour accéder à l'interface d'administration Django (http://127.0.0.1:8000/admin/) :
+
+```bash
+python manage.py createsuperuser
+```
+
+### 6. Lancer le serveur de développement
 
 ```bash
 python manage.py runserver
